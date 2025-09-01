@@ -10,9 +10,6 @@
 ```bash
 # Gradle 빌드
 ./gradlew build
-
-# 애플리케이션 실행
-./gradlew bootRun
 ```
 
 ### 2. Docker Compose 사용
