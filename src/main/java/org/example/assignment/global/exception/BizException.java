@@ -1,12 +1,15 @@
 package org.example.assignment.global.exception;
 
+import lombok.Getter;
+
+@Getter
 public class BizException extends RuntimeException {
 
-    public BizException(ErrorDescription errorDescription) {
-        super(errorDescription.getMessage());
+    private final ErrorCode errorCode;
+
+    public BizException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 
-    public BizException(String message) {
-        super(message);
-    }
 }
