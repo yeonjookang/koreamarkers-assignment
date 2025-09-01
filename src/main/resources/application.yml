@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://mysql:3306/korean_markers
     username: korean_markers
-    password: korean_markers123
+    password: korean_markers1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     defer-datasource-initialization: true
@@ -24,6 +24,6 @@ logging:
     org.springframework: info
 
 jwt:
-  secret: your-256-bit-secret-your-256-bit-secret-your-256-bit-secret-your-256-bit-secret
-  access-token-expiration: 600  # 10분
-  refresh-token-expiration: 86400 # 24시간
+  secret: your256bitsecretyour256bitsecretyour256bitsecretyour256bitsecret
+  access-token-expiration: 600000      # 10분
+  refresh-token-expiration: 86400000   # 24시간

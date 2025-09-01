@@ -26,6 +26,7 @@ public class SecurityConfig {
 						.authenticationEntryPoint(authenticationEntryPoint)
 
 				)
+				.formLogin(form -> form.disable())
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/signup","/signin").permitAll()
 						.anyRequest().authenticated()

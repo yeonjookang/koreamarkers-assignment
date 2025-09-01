@@ -34,11 +34,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/logout")
+    @DeleteMapping("/log-out")
     public ResponseEntity<Void> logout() {
         userService.logout();
         return ResponseEntity.ok().build();
     }
+
 
     @PostMapping("/reissue")
     public ResponseEntity<SignInResponse> reissue(HttpServletRequest request, HttpServletResponse response) {

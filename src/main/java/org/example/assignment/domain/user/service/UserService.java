@@ -60,6 +60,7 @@ public class UserService {
         User user = User.builder()
                 .email(request.email())
                 .password(encodedPassword)
+                .nickname(request.nickname())
                 .build();
 
         userRepository.save(user);
@@ -87,12 +88,11 @@ public class UserService {
             throw new BizException(ErrorDescription.NOT_FOUND_ACCESS_TOKEN);
         }
 
-        String token = jwtUtil.substringToken(refreshToken);
-        if (!jwtUtil.validateToken(token)) {
+        if (!jwtUtil.validateToken(refreshToken)) {
             throw new BizException(ErrorDescription.INVALID_TOKEN);
         }
 
-        Long userId = jwtUtil.getUserIdFromToken(token);
+        Long userId = jwtUtil.getUserIdFromToken(refreshToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BizException(ErrorDescription.NOT_FOUND_USER));
 

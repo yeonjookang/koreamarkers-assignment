@@ -38,8 +38,7 @@ public class JwtUtil {
     public String createAccessToken(User user) {
         Date date = new Date();
 
-        return BEARER_PREFIX +
-                Jwts.builder()
+        return Jwts.builder()
                         .setSubject(String.valueOf(user.getId()))
                         .setExpiration(new Date(date.getTime() + accessTokenExpiration))
                         .setIssuedAt(date)
@@ -50,8 +49,7 @@ public class JwtUtil {
     public String createRefreshToken(User user) {
         Date date = new Date();
 
-        return BEARER_PREFIX +
-                Jwts.builder()
+        return Jwts.builder()
                         .setSubject(String.valueOf(user.getId()))
                         .setExpiration(new Date(date.getTime() + refreshTokenExpiration))
                         .setIssuedAt(date)

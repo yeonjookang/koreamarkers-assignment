@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.assignment.domain.user.entity.User;
 import org.example.assignment.domain.user.repository.UserRepository;
 import org.example.assignment.global.exception.BizException;
@@ -31,6 +30,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain filterChain) throws IOException, ServletException {
+
+        String path = httpRequest.getRequestURI();
+        if ("/signup".equals(path) || "/signin".equals(path)) {
+            filterChain.doFilter(httpRequest, httpResponse);
+            return;
+        }
+
         String bearerJwt = httpRequest.getHeader("Authorization");
 
         if (bearerJwt == null || !bearerJwt.startsWith("Bearer ")) {
