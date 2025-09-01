@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.assignment.domain.user.dto.request.SignInRequest;
 import org.example.assignment.domain.user.dto.request.SignUpRequest;
 import org.example.assignment.domain.user.dto.response.SignInResponse;
+import org.example.assignment.domain.user.dto.response.UserInfoResponse;
 import org.example.assignment.domain.user.entity.User;
 import org.example.assignment.domain.user.repository.UserRepository;
 import org.example.assignment.global.exception.BizException;
@@ -110,6 +111,13 @@ public class UserService {
         response.addCookie(cookie);
 
         return new SignInResponse(newAccessToken);
+    }
+
+    public UserInfoResponse getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        
+        return new UserInfoResponse(user.getEmail(), user.getNickname());
     }
 
 }

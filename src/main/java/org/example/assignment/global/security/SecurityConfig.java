@@ -28,7 +28,7 @@ public class SecurityConfig {
 				)
 				.formLogin(form -> form.disable())
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/signup","/signin").permitAll()
+						.requestMatchers("/signup","/signin","/","/login","/dashboard","/user-info","/css/**","/js/**","/images/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

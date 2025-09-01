@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">내 정보</h2>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">이메일</label>
+                            <div id="userEmail" class="form-control-plaintext">-</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">닉네임</label>
+                            <div id="userNickname" class="form-control-plaintext">-</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="goToDashboard()">대시보드</button>
+                            <button class="btn btn-outline-danger" onclick="logout()">로그아웃</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        // 페이지 로드 시 사용자 정보 가져오기
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            loadUserInfo();
+        });
+
+        // 사용자 정보 로드 함수
+        async function loadUserInfo() {
+            try {
+                const response = await authenticatedFetch('/users');
+                
+                if (response.ok) {
+                    const userInfo = await response.json();
+                    document.getElementById('userEmail').textContent = userInfo.email;
+                    document.getElementById('userNickname').textContent = userInfo.nickname;
+                } else if (response.status === 401) {
+                    showError('인증이 필요합니다. 다시 로그인해주세요.');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    showError('사용자 정보를 불러오는데 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('사용자 정보 로드 오류:', error);
+                showError('사용자 정보를 불러오는 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 대시보드로 이동
+        function goToDashboard() {
+            window.location.href = '/dashboard';
+        }
+    </script>
+</body>
+</html>

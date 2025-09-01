@@ -32,15 +32,18 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain filterChain) throws IOException, ServletException {
 
         String path = httpRequest.getRequestURI();
-        if ("/signup".equals(path) || "/signin".equals(path)) {
+        
+        // 인증이 필요 없는 경로들
+        if ("/signup".equals(path) || "/signin".equals(path) || "/".equals(path) || "/login".equals(path) || "/dashboard".equals(path) || "/user-info".equals(path) || path.startsWith("/css/") || path.startsWith("/js/")) {
             filterChain.doFilter(httpRequest, httpResponse);
             return;
         }
 
+        // 인증이 필요한 경로들 (API 엔드포인트)
         String bearerJwt = httpRequest.getHeader("Authorization");
 
         if (bearerJwt == null || !bearerJwt.startsWith("Bearer ")) {
-            filterChain.doFilter(httpRequest, httpResponse);
+            setErrorResponse(httpResponse, "JWT 토큰이 필요합니다.");
             return;
         }
 
