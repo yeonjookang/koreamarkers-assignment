@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: korean_markers
+      MYSQL_USER: korean_markers
+      MYSQL_PASSWORD: korean_markers1234
+      MYSQL_ROOT_PASSWORD: korean_markers1234
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - korean_markers
+
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: spring-app
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "8080:8080"
+    networks:
+      - korean_markers
+
+  redis:
+    image: redis:7.0
+    container_name: redis-server
+    ports:
+      - "6378:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - korean_markers
+
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  korean_markers:
